@@ -7,9 +7,9 @@ module.exports = app => {
     id: { type: BIGINT, primaryKey: true, autoIncrement: true },
     content: TEXT,
     userId: BIGINT,
-    type: INTEGER,
-    targetId: BIGINT,
-    replyId: BIGINT,
+    type: INTEGER,   //  0 question  1 answer   2 comment   
+    targetId: BIGINT,//  questionId  answerId commentId
+    replyId: BIGINT, //  commentId
     date: BIGINT,
   });
 
@@ -29,3 +29,11 @@ module.exports = app => {
   };
   return Comment;
 };
+
+
+//question直接评论 type=0  targetId=questionId   replayId==null
+//question所有评论 type=0  targetId=questionId
+//answer直接评论   type=1  targetId=answerId   replayId==null
+//answer所有评论   type=1  targetId=answerId  
+//comment直接评论  type=2  targetId=commentId  replayId==null
+//comment所有评论  type=2  targetId=commentId 

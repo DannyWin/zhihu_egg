@@ -25,9 +25,6 @@ module.exports = app => {
     app.model.Question.hasMany(app.model.Comment, {
       foreignKey: 'targetId',
     });
-    app.model.Question.hasMany(app.model.Vote, {
-      foreignKey: 'targetId',
-    });
   };
   return Question;
 };

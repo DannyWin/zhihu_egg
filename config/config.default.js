@@ -28,6 +28,10 @@ module.exports = appInfo => {
     jwt: { // 令牌配置项
       secret: '123456',
     },
+    validate: {   // 配置参数校验器，基于parameter
+      convert: true,    // 对参数可以使用convertType规则进行类型转换
+      // validateRoot: false,   // 限制被验证值必须是一个对象。
+    },
   };
 
   // use for cookie sign key, should change to your own and keep security

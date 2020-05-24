@@ -6,7 +6,6 @@ class LoginController extends Controller {
   async login() {
     const { ctx, app } = this;
     const { uid, pwd } = ctx.request.body;
-    console.log(ctx.request.body);
     const user = await ctx.service.user.findOne({ uid, pwd });
     if (user) {
       const token = app.jwt.sign({

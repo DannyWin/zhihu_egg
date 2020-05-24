@@ -8,6 +8,22 @@ const createRule = {
   topics: 'topicsInQuestion',
 };
 
+const getAnswerRule = {
+  offset: {
+    type:'number',
+    min:0,
+  },
+  limit:  {
+    type:'number',
+    min:0,
+  },
+  order: 'string',
+};
+
+const paramRule = {
+  id: 'number',
+};
+
 class QuestionController extends Controller {
   async get() {
     const { ctx } = this;
@@ -29,10 +45,15 @@ class QuestionController extends Controller {
   }
   async getAnswer() {
     const { ctx } = this;
+    ctx.validate(getAnswerRule, ctx.request.query);
+    ctx.validate(paramRule, ctx.params);
     const questionId = ctx.params.id;
-    const ret = await this.ctx.service.answer.findAll({ questionId });
+    const { offset, limit, order } = ctx.request.query;
+    
+    const ret = await this.ctx.service.answer.findAndCountAll({ questionId, offset, limit, order });
     ctx.body = {
-      answers: ret,
+      count: ret.count,
+      answers: ret.rows,
     };
     ctx.status = 200;
   }

@@ -3,10 +3,23 @@
 const Service = require('egg').Service;
 
 class AnswerService extends Service {
-  async findAll(obj) {
-    const { questionId } = obj;
-    const answers = await this.ctx.model.Answer.findAll({ where: { questionId } });
+  async findAll(whereObj) {
+    const { questionId, limit, offset, order } = whereObj;
+    let orderActual;
+    if (order === 'normal') {
+      orderActual = [['date', 'DESC']];
+    }
+    const answers = await this.ctx.model.Answer.findAll({ where: { questionId }, limit, offset, order: orderActual });
     return answers;
+  }
+  async findAndCountAll(whereObj) {
+    const { questionId, limit, offset, order } = whereObj;
+    let orderActual;
+    if (order === 'normal') {
+      orderActual = [['date', 'DESC']];
+    }
+    const ret = await this.ctx.model.Answer.findAndCountAll({include:[{ model: this.ctx.model.User, attributes: ['uid', 'name','avatar'] },{ model: this.ctx.model.Comment,where:{type:1} }], where: { questionId }, limit, offset, order: orderActual });
+    return ret;
   }
 }
 
